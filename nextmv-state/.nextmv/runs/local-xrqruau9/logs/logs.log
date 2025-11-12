@@ -1,4 +1,0 @@
-  File "/var/folders/yq/yp1b76q11xdd89sr6fr4mxgm0000gn/T/tmpnfgw2hrz/src/./main.py", line 86
-    duration_milliseconds=solver.wall_time():d,
-                                            ^
-SyntaxError: invalid syntax
