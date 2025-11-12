@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/var/folders/yq/yp1b76q11xdd89sr6fr4mxgm0000gn/T/tmpelhrkbsy/src/./main.py", line 84, in <module>
+    main()
+  File "/var/folders/yq/yp1b76q11xdd89sr6fr4mxgm0000gn/T/tmpelhrkbsy/src/./main.py", line 19, in main
+    with open(data_file, "r", encoding="utf-8") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected str, bytes or os.PathLike object, not dict

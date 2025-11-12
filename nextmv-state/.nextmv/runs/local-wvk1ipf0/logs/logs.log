@@ -1,0 +1,27 @@
+Number of variables = 77
+Number of constraints = 9
+Solving with Glop solver v9.8.3296
+
+Annual Foods:
+Wheat Flour (Enriched): $10.774457511918223
+Liver (Beef): $0.6907834111074193
+Cabbage: $4.093268864842877
+Spinach: $1.8277960703546996
+Navy Beans, Dried: $22.275425687243036
+
+Optimal annual price: $39.6617
+
+Nutrients per day:
+Calories (kcal): 3.00 (min 3)
+Protein (g): 147.41 (min 70)
+Calcium (g): 0.80 (min 0.8)
+Iron (mg): 60.47 (min 12)
+Vitamin A (KIU): 5.00 (min 5)
+Vitamin B1 (mg): 4.12 (min 1.8)
+Vitamin B2 (mg): 2.70 (min 2.7)
+Niacin (mg): 27.32 (min 18)
+Vitamin C (mg): 75.00 (min 75)
+
+Advanced usage:
+Problem solved in 8 milliseconds
+Problem solved in 14 iterations

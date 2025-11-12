@@ -1,0 +1,12 @@
+{
+    "statistics": {
+        "result": {
+            "duration": 9.0,
+            "value": 0.10866227820675686,
+            "custom": {
+                "iterations": 14
+            }
+        },
+        "schema": "v1"
+    }
+}
