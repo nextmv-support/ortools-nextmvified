@@ -3,9 +3,10 @@
 A description of the problem can be found here:
 https://en.wikipedia.org/wiki/Stigler_diet.
 """
-from ortools.linear_solver import pywraplp
+
 import json
-from pathlib import Path
+
+from ortools.linear_solver import pywraplp
 
 
 def main():
@@ -65,7 +66,9 @@ def main():
         result = "\nAnnual Foods:\n"
         for i, food in enumerate(foods):
             if food.solution_value() > 0.0:
-                result += "{}: ${:.4f}\n".format(data[i][0], 365.0 * food.solution_value())
+                result += "{}: ${:.4f}\n".format(
+                    data[i][0], 365.0 * food.solution_value()
+                )
                 for j, _ in enumerate(nutrients):
                     nutrients_result[j] += data[i][j + 3] * food.solution_value()
 
@@ -73,7 +76,9 @@ def main():
 
         result += "\nNutrients per day:\n"
         for i, nutrient in enumerate(nutrients):
-            result += "{}: {:.2f} (min {})\n".format(nutrient[0], nutrients_result[i], nutrient[1])
+            result += "{}: {:.2f} (min {})\n".format(
+                nutrient[0], nutrients_result[i], nutrient[1]
+            )
 
         # Write to file
         f.write(result)
