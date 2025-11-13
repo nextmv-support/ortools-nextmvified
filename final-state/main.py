@@ -3,10 +3,15 @@
 A description of the problem can be found here:
 https://en.wikipedia.org/wiki/Stigler_diet.
 """
-
-import json
-
 from ortools.linear_solver import pywraplp
+import json
+from pathlib import Path
+import nextmv
+from nextmv import cloud
+
+# MODIFIED - load manifest and extract options to use in the execution
+manifest = cloud.Manifest.from_yaml(".")
+options = manifest.extract_options()
 
 
 def main():
@@ -20,6 +25,15 @@ def main():
 
     nutrients = data_file.get("nutrients", [])
     data = data_file.get("data", [])
+
+    ## MODIFIED to use option
+    calories_min = next((val for name, val in nutrients if name == "Calories (kcal)"), None)
+    if options.desired_calories != calories_min:
+        print("My calorie budget changed")
+        for pair in nutrients:
+            if pair[0] == "Calories (kcal)":
+                pair[1] = options.desired_calories
+                break
 
     # Instantiate a Glop solver and naming it.
     solver = pywraplp.Solver.CreateSolver("GLOP")
@@ -66,9 +80,7 @@ def main():
         result = "\nAnnual Foods:\n"
         for i, food in enumerate(foods):
             if food.solution_value() > 0.0:
-                result += "{}: ${:.4f}\n".format(
-                    data[i][0], 365.0 * food.solution_value()
-                )
+                result += "{}: ${:.4f}\n".format(data[i][0], 365.0 * food.solution_value())
                 for j, _ in enumerate(nutrients):
                     nutrients_result[j] += data[i][j + 3] * food.solution_value()
 
@@ -76,9 +88,7 @@ def main():
 
         result += "\nNutrients per day:\n"
         for i, nutrient in enumerate(nutrients):
-            result += "{}: {:.2f} (min {})\n".format(
-                nutrient[0], nutrients_result[i], nutrient[1]
-            )
+            result += "{}: {:.2f} (min {})\n".format(nutrient[0], nutrients_result[i], nutrient[1])
 
         # Write to file
         f.write(result)
@@ -86,6 +96,23 @@ def main():
     print("\nAdvanced usage:")
     print(f"Problem solved in {solver.wall_time():d} milliseconds")
     print(f"Problem solved in {solver.iterations():d} iterations")
+
+    # MODIFIED - write statistics to statistics.json
+    statistics_file = "statistics.json"
+    with open(statistics_file, "w") as stats_f:
+        statistics = nextmv.Statistics(
+            result=nextmv.ResultStatistics(
+                duration=solver.wall_time(),
+                value=objective.Value(),
+                custom={
+                    "iterations": solver.iterations(),
+                    "annual_price": 365.0 * objective.Value()
+                },
+            ),
+        )
+        stats_f.write(json.dumps({"statistics": statistics.to_dict()}))
+
+    print(f"Statistics written to {statistics_file}")   
 
 
 if __name__ == "__main__":
